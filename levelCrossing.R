@@ -1,6 +1,13 @@
-generateTempBits = function(d){
+levelCrossing = function(d1, d2){
+  tempBits1 = generateTempBits(d1)
+  tempBits2 = generateTempBits(d2)
+  bits = bitsByCooperate(tempBits1,tempBits2)
+  return(bits)
+}
+
+generateTempBits = function(d,alpha = 0.2){
   len = nrow(d)
-  connectedData = rbind(d1[,1],d2[,2],d3[,3])
+  connectedData = rbind(d[,1],d[,2],d[,3])
   meanData = mean(connectedData); sdData = sd(connectedData)
   q_plus = meanData + alpha*sdData; q_minus = meanData - alpha*sdData
   tempBits = ifelse(connectedData>q_plus,1,2)
@@ -9,14 +16,40 @@ generateTempBits = function(d){
 }
 
 bitsByCooperate = function(alice, bob){
-  excurtionIndexesAlice = getExcurtionIndexes(alice,m)
+  excurtionIndexesAlice = getExcurtionIndexes(alice)
   excurtionIndexesBob = getIndexesFromBob(excurtionIndexesAlice, bob)
   return(list(a = alice[excurtionIndexesBob,], b= bob[excurtionIndexesBob,]))
 }
 
-levelCrossing = function(d1, d2){
-  tempBits1 = generateTempBits(d1)
-  tempBits2 = generateTempBits(d2)
-  bits = bitsByCooperate(tempBits1,tempBits2)
-  return(bits)
+getExcurtionIndexes = function(d, m=3){
+  len = length(d)
+  indexes = c()
+  for( i in 1:len ){
+    cuBit = d[i]
+    
+    if(cuBit == preBit && cuBit!=2) consecutive++
+    else {consecutive = 1; preBit = cuBit}
+    
+    if(consecutive == m){
+      consecutive = 0
+      indexes = c(indexes, i-(m-1)/2)
+    }
+  }
+  return(indexes)
 }
+
+getIndexesFromBob = function(excurtionIndexesAlice, tempBits){
+  for(i in 1:len){
+    target = tempBits[i]
+    hasExcurtion = T
+    
+    for(j in start:end){
+      if(tempBits[j]!=target || tempBits[j]==2){  hasExcurtion = F; break;  }
+    }
+    
+    if(hasExcurtion) indexes = c(indexes, index)
+  }
+  return(indexes)
+}
+
+levelCrossing(converted_data_alice, converted_data_bob)

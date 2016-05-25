@@ -1,5 +1,6 @@
 source("./readData.R")
 source("./train.R")
+source("./levelCrossing.R")
 
 file_alice = "./datas/alice.csv"
 file_bob = "./datas/bob.csv"
