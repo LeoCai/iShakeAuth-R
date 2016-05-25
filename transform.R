@@ -4,6 +4,20 @@ I = matrix(
     0,0,1),nrow = 3, ncol = 3, byrow = T
 )
 
+getUpdateMatrix = function(cuMatrix, gyr, dt) {
+  gyr = as.numeric(gyr); dt = as.numeric(dt)
+  delta = sqrt((gyr[1] * dt) ^ 2 + (gyr[2] * dt) ^ 2 + (gyr[3] * dt) ^ 2)
+  B = matrix(
+    c(0,-gyr[3] * dt,    gyr[2] * dt,
+      gyr[3] * dt,   0,-gyr[1] * dt,-gyr[2] * dt,  gyr[1] * dt,     0),
+    nrow = 3, ncol = 3, byrow = TRUE
+  )
+  B1 = B * (sin(delta) / delta)
+  B2 = (1 - cos(delta)) / (delta ^ 2) * (B %*% B)
+  updateMatrix = I + B1 + B2
+  return(cuMatrix %*% updateMatrix)
+}
+
 updateMatrixByGYR = function(gyr, dt, cuMatrix) {
   delta = as.numeric(sqrt((gyr[1] * dt) ^ 2 + (gyr[2] * dt) ^ 2 + (gyr[3] * dt) ^ 2))
   if(delta == 0) return(cuMatrix);
@@ -91,6 +105,19 @@ product <- function(x, y, i=1:3) {
   return (x[Index3D(i + 1)] * y[Index3D(i + 2)] -
             x[Index3D(i + 2)] * y[Index3D(i + 1)])
 }
+
+carlibrate = function(rm2,rotationAxis, gyromatrix){
+  mindist = 10000000;  bestAngle = 0;  bestRm = 0
+  
+  for(angle in 0:360){
+    rm = RotationMatrix(angle/pi*180, rotationAxis);dist = mean((rm2%*%rm - gyromatrix)^2)
+    if(dist<mindist){mindist = dist; bestAngle = angle;bestRm = rm2%*%rm}
+    # print(paste(dist,angle))
+  }
+  # print(paste(mindist,bestAngle))
+  return (bestRm)
+}
+
 
 getInitMatrix(c(2,1,0), 0)
 
