@@ -9,5 +9,5 @@ converted_data_bob = data_bob
 bits_alice_bob = levelCrossing(converted_data_alice, converted_data_bob)
 bits_alice
 bits_bob
-bits_reconcilation = reconcilate(bits_alice,bits_bob)
+bits_reconcilation = reconcilation(bits_alice,bits_bob)
 key = randomnessExtract(bits_reconcilation,codeTable)
