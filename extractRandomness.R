@@ -3,13 +3,13 @@ MALKOV_ORDER = 4
 
 loadCodeTable = function() {
   codeTable = list()
-  for (i in 1:CODING_LEN) {
+  for (i in 0:CODING_LEN) {
     keys = generateKey(i, CODING_LEN)
     codesize = log2(length(keys))
     if (codesize == 0)
       codesize = 1
     for (j in 1:length(keys)) {
-      codeTable[keys[j]] = sprintf("%010d",as.numeric(number2binary(j)))
+      codeTable[keys[j]] = sprintf(paste("%0",codesize,"d",sep=""),as.numeric(number2binary(j)))
     }
   }
   return(codeTable)
@@ -63,7 +63,7 @@ subStringByMalkov = function(bits, malkov_order){
   subStrings = rep('',stringNum)
   for(i in 1:len){
     strIndex = 0
-    for(j in 1:malkov_order){
+    for(j in 0:(malkov_order-1)){
       strIndex = strIndex*2 + bits[i+j]
     }
     subStrings[strIndex] = paste(subStrings[strIndex],bits[i+malkov_order],sep = "") 
@@ -72,21 +72,25 @@ subStringByMalkov = function(bits, malkov_order){
 }
 
 codeByTable = function(subStrings, CODING_LEN,codingTable) {
+  finalKey = ""
   for (str in subStrings) {
     strLen = nchar(str)
-    for( i in 1:strLen){
-      if ((i + CODING_LEN) > strLen)
-        key = substr(str,i,strLen)
-      else
-        key = substr(str,i, i + CODING_LEN)
-      code = codingTable[key]
-      for (j in 1:codeLen)
+    if(strLen != 0){
+      for( i in 1:strLen){
+        if ((i + CODING_LEN) > strLen)
+          key = substr(str,i,strLen)
+        else
+          key = substr(str,i, i + CODING_LEN)
+        key = sprintf(paste("%0",CODING_LEN,"d",sep=""),as.numeric(key))
+        code = codingTable[key]
         finalKey = paste(finalKey, code,sep = "")
+      }
     }
-   
   }
   return(finalKey)
 }
 
-codingTable = loadCodeTable()
-randomnessExtract(c(1,1,0,1,0,0,1,1,0,1,1,0),codingTable)
+if(DEBUG){
+  codingTable = loadCodeTable()
+  randomnessExtract(c(1,1,0,1,0,0,1,1,0,1,1,0),codingTable)
+}

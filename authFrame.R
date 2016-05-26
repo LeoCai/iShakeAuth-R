@@ -1,6 +1,12 @@
+DEBUG = F
+
 source("./readData.R")
 source("./train.R")
 source("./levelCrossing.R")
+source("./extractRandomness.R")
+source("./reconcilation.R")
+
+codeTable = loadCodeTable()
 
 file_alice = "./datas/alice.csv"
 file_bob = "./datas/bob.csv"
@@ -17,3 +23,4 @@ bits_alice = bits_alice_bob$a
 bits_bob = bits_alice_bob$b
 bits_reconcilation = reconcilation(bits_alice,bits_bob)
 key = randomnessExtract(bits_reconcilation,codeTable)
+key

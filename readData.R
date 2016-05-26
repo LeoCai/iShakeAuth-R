@@ -63,8 +63,11 @@ getTrainData = function(d){
   return(d[1:20,])
 }
 
-data_alice = readData("./datas/alice.csv")
-data_bob = readData("./datas/bob.csv")
-d = cross_correlation(data_alice,data_bob)
-getTrainData(d$alice)
+if(DEBUG){
+  data_alice = readData("./datas/alice.csv")
+  data_bob = readData("./datas/bob.csv")
+  d = cross_correlation(data_alice,data_bob)
+  getTrainData(d$alice)
+}
+
 # plot(data_alice[,10],type="l")
