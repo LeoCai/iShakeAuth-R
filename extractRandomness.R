@@ -97,7 +97,7 @@ codeByTable = function(subStrings, CODING_LEN,codingTable) {
       }
     }
   }
-  return(finalKey)
+  return(as.numeric(strsplit(finalKey,"")[[1]]))
 }
 
 DEBUG = F

@@ -5,6 +5,8 @@ source("./train.R")
 source("./levelCrossing.R")
 source("./extractRandomness.R")
 source("./reconcilation.R")
+source("./performance.R")
+library(entropy)
 
 codeTable = loadCodeTable()
 
@@ -18,10 +20,14 @@ trainDataFromAlice = getTrainData(data_bob)
 trainParameter = train(trainDataFromBob, trainDataFromAlice)
 converted_data_alice = convertData(data_alice,trainParameter$initTheta1)
 converted_data_bob = convertData(data_bob,trainParameter$initTheta2)
-bits_alice_bob = levelCrossing(converted_data_alice, converted_data_bob)
+bits_alice_bob = bestLevelCrossing(converted_data_alice, converted_data_bob)
 bits_alice = bits_alice_bob$a
 bits_bob = bits_alice_bob$b
+mismatch = getMismatch(bits_alice,bits_bob)
+
 # bits_reconcilation = reconcilation(bits_alice,bits_bob)
 bits_reconcilation = bits_alice
 key = randomnessExtract(bits_reconcilation,codeTable)
-key
+entropy(key)
+# entropy(converted_data_alice[,1])
+

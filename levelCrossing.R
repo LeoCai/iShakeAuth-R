@@ -1,23 +1,29 @@
-levelCrossing = function(d1, d2) {
-  tempBits1 = generateTempBits(d1)
-  tempBits2 = generateTempBits(d2)
-  bits = bitsByCooperate(tempBits1,tempBits2)
-  return(bits)
+levelCrossing = function(d1, d2,alpha = 0.2) {
+  alice = c()
+  bob = c()
+  for (i in 1:3) {
+    tempBits1 = generateTempBits(as.numeric(d1[,i]),alpha)
+    tempBits2 = generateTempBits(as.numeric(d2[,i]),alpha)
+    bitsOneDim = bitsByCooperate(tempBits1,tempBits2,2)
+    alice = c(alice,bitsOneDim$a)
+    bob = c(bob,bitsOneDim$b)
+  }
+  return(list(
+    a = alice,b = bob,bitLen = length(alice)
+  ))
 }
 
 generateTempBits = function(d,alpha = 0.2) {
-  len = nrow(d)
-  connectedData = c(d[,1],d[,2],d[,3])
-  meanData = mean(connectedData); sdData = sd(connectedData)
+  meanData = mean(d); sdData = sd(d)
   q_plus = meanData + alpha * sdData; q_minus = meanData - alpha * sdData
-  tempBits = ifelse(connectedData > q_plus,1,2)
-  tempBits = ifelse(connectedData < q_minus,0,tempBits)
+  tempBits = ifelse(d > q_plus,1,2)
+  tempBits = ifelse(d < q_minus,0,tempBits)
   return(tempBits)
 }
 
-bitsByCooperate = function(alice, bob) {
-  excurtionIndexesAlice = getExcurtionIndexes(alice)
-  excurtionIndexesBob = getIndexesFromBob(excurtionIndexesAlice, bob)
+bitsByCooperate = function(alice, bob,m) {
+  excurtionIndexesAlice = getExcurtionIndexes(alice,m)
+  excurtionIndexesBob = getIndexesFromBob(excurtionIndexesAlice, bob,m)
   return(list(a = alice[excurtionIndexesBob], b = bob[excurtionIndexesBob]))
 }
 
@@ -65,6 +71,40 @@ getIndexesFromBob = function(excurtionIndexesAlice, tempBits, m = 3) {
   return(indexes)
 }
 
+bestLevelCrossing = function(converted_data_alice, converted_data_bob){
+  bestAlpha = 0
+  maxMetric = 0
+  bestRes = list()
+  for (alpha in seq(0.01,1,0.02)) {
+    rs = levelCrossing(converted_data_alice, converted_data_bob,alpha)
+    mismatchNum = getMismatch(rs$a,rs$b)
+    correct = length(rs$a) - mismatchNum
+    time = (nrow(converted_data_alice) - 1) * 0.02
+    metric = getLevelCrossingMetric(mismatchNum,correct, time)
+    if(metric>maxMetric){
+      maxMetric = metric
+      bestAlpha = alpha
+      bestRes = rs
+    }
+    print(paste("alpha:",alpha,"  bitsLen",rs$bitLen,"  mis",mismatchNum,"  metric",metric))
+  }
+  return(bestRes)
+}
+
 if (DEBUG) {
-  levelCrossing(converted_data_alice, converted_data_bob)
+  bestLevelCrossing(converted_data_alice, converted_data_bob)
+#   bestAlpha = 0
+#   maxMetric = 0
+#   for (alpha in seq(0.01,1,0.02)) {
+#     rs = levelCrossing(converted_data_alice, converted_data_bob,alpha)
+#     mismatchNum = getMismatch(rs$a,rs$b)
+#     correct = length(rs$a) - mismatchNum
+#     time = (nrow(converted_data_alice) - 1) * 0.02
+#     metric = getLevelCrossingMetric(mismatchNum,correct, time)
+#     if(metric>maxMetric){
+#       maxMetric = metric
+#       bestAlpha = alpha
+#     }
+#     print(paste("alpha:",alpha,"  bitsLen",rs$bitLen,"  mis",mismatchNum,"  metric",metric))
+#   }
 }
