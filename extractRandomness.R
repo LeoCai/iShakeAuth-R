@@ -5,11 +5,12 @@ loadCodeTable = function() {
   codeTable = list()
   for (i in 0:CODING_LEN) {
     keys = generateKey(i, CODING_LEN)
-    codesize = log2(length(keys))
+    codesize = ceiling(log2(length(keys)))
     if (codesize == 0)
       codesize = 1
+    rtmcode = sample(0:(length(keys) - 1),length(keys))
     for (j in 1:length(keys)) {
-      codeTable[keys[j]] = sprintf(paste("%0",codesize,"d",sep=""),as.numeric(number2binary(j)))
+      codeTable[keys[j]] = sprintf(paste("%0",codesize,"d",sep = ""),as.numeric(number2binary(rtmcode[j])))
     }
   }
   return(codeTable)
@@ -27,6 +28,8 @@ number2binary = function(number, noBits) {
 permutations = list()
 cuIndex = 1
 generateKey = function(numOne, n) {
+  permutations <<- list()
+  cuIndex <<- 1
   pList = c()
   recursiveGenerate(0,0,pList,numOne,n)
   keys = c()
@@ -57,16 +60,16 @@ randomnessExtract = function(bits,codingTable) {
   return(codeByTable(subStrings, CODING_LEN,codingTable))
 }
 
-subStringByMalkov = function(bits, malkov_order){
-  len = (length(bits)/malkov_order - 1)*malkov_order
-  stringNum = 2^malkov_order
+subStringByMalkov = function(bits, malkov_order) {
+  len = (length(bits) / malkov_order - 1) * malkov_order
+  stringNum = 2 ^ malkov_order
   subStrings = rep('',stringNum)
-  for(i in 1:len){
+  for (i in 1:len) {
     strIndex = 0
-    for(j in 0:(malkov_order-1)){
-      strIndex = strIndex*2 + bits[i+j]
+    for (j in 0:(malkov_order - 1)) {
+      strIndex = strIndex * 2 + bits[i + j]
     }
-    subStrings[strIndex] = paste(subStrings[strIndex],bits[i+malkov_order],sep = "") 
+    subStrings[strIndex] = paste(subStrings[strIndex],bits[i + malkov_order],sep = "")
   }
   return(subStrings)
 }
@@ -75,13 +78,20 @@ codeByTable = function(subStrings, CODING_LEN,codingTable) {
   finalKey = ""
   for (str in subStrings) {
     strLen = nchar(str)
-    if(strLen != 0){
-      for( i in 1:strLen){
-        if ((i + CODING_LEN) > strLen)
+    if (strLen != 0) {
+      for (i in seq(1,strLen,CODING_LEN)) {
+        if ((i + CODING_LEN - 1) > strLen){
           key = substr(str,i,strLen)
+          b = 0
+          for (m in 1:(i + CODING_LEN - 1 - strLen)) {
+            key = paste(c(b,key),collapse = '')
+            b = 1 - b
+          }
+        }
         else
-          key = substr(str,i, i + CODING_LEN)
-        key = sprintf(paste("%0",CODING_LEN,"d",sep=""),as.numeric(key))
+          key = substr(str,i, i + CODING_LEN - 1)
+        
+        key = sprintf(paste("%0",CODING_LEN,"d",sep = ""),as.numeric(key))
         code = codingTable[key]
         finalKey = paste(finalKey, code,sep = "")
       }
@@ -90,7 +100,8 @@ codeByTable = function(subStrings, CODING_LEN,codingTable) {
   return(finalKey)
 }
 
-if(DEBUG){
+DEBUG = F
+if (DEBUG) {
   codingTable = loadCodeTable()
   randomnessExtract(c(1,1,0,1,0,0,1,1,0,1,1,0),codingTable)
 }

@@ -11,7 +11,7 @@ generateTempBits = function(d,alpha = 0.2) {
   meanData = mean(connectedData); sdData = sd(connectedData)
   q_plus = meanData + alpha * sdData; q_minus = meanData - alpha * sdData
   tempBits = ifelse(connectedData > q_plus,1,2)
-  tempBits = ifelse(tempBits < q_minus,0,tempBits)
+  tempBits = ifelse(connectedData < q_minus,0,tempBits)
   return(tempBits)
 }
 
@@ -25,7 +25,8 @@ getExcurtionIndexes = function(d, m = 3) {
   len = length(d)
   indexes = c()
   preBit = d[1]
-  for (i in 1:len) {
+  consecutive = 1;
+  for (i in 2:len) {
     cuBit = d[i]
     
     if (cuBit == preBit && cuBit != 2)
