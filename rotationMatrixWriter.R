@@ -1,6 +1,10 @@
 
+indexGacc = 7:9
+indexMag = 13:15
+indexGyr = 10:12
+indexDt = 22
 
-getMutipleRtms = function(fileName){
+getMutipleRtms = function(fileName,MAG = T){
   rtms_mag_list = data.frame()
   rtms_gyro_list = data.frame()
  
@@ -9,7 +13,7 @@ getMutipleRtms = function(fileName){
   
   #first data
   d = ds[1,]
-  gacc = as.numeric(d[7:9]); mag = as.numeric(d[13:15]); gyr = as.numeric(d[10:12]);dt = as.numeric(d[22])
+  gacc = as.numeric(d[indexGacc]); mag = as.numeric(d[indexMag]); gyr = as.numeric(d[indexGyr]);dt = as.numeric(d[indexDt])
   rtm_mag = getRtmByMag(gacc, mag)
   rtm_gyr = rtm_mag
   rtms_mag_list = rbind(rtms_mag_list,rtm_mag)
@@ -18,7 +22,7 @@ getMutipleRtms = function(fileName){
   
   for(i in 2:nrow(ds)){
     d = ds[i,]
-    gacc = as.numeric(d[7:9]); mag = as.numeric(d[13:15]); gyr = as.numeric(d[10:12]);dt = as.numeric(d[22])
+    gacc = as.numeric(d[indexGacc]); mag = as.numeric(d[indexMag]); gyr = as.numeric(d[indexGyr]);dt = as.numeric(d[indexDt])
     rtm_mag = getRtmByMag(gacc, mag)
     rtm_gyr = getRtmByGyr(rtm_gyr, gyr, dt)
     rtms_mag_list = rbind(rtms_mag_list,rtm_mag)

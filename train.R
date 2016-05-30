@@ -13,7 +13,7 @@ train = function(d1, d2) {
   }
   initTheta2 =  2 * pi / maxIndex * i
   # rs = iterTheta(d1, d2, 0, initTheta2)
-  return(list(initTheta1 = 0, initTheta2 = initTheta2))
+  return(list(initTheta1 = 0, initTheta2 = initTheta2,maxCor = maxCor))
 }
 
 iterTheta = function(d1, d2, initTheta1, initTheta2) {
@@ -50,7 +50,7 @@ gyroConvert = function(d, initMatrix) {
     sdata = d[i,]; lacc = d[i,1:3]; gyr = d[i,7:9]; gacc = d[i,4:6]; dt = d[i,12]
     cuMatrixCarlibrated = getUpdateMatrix(cuMatrixCarlibrated, gyr, dt)
     
-    if (i %% 20 == 0) {
+    if (i %% 50 == 0) {
       accMatrix = getCarlibratedMatirx(gacc,initGVPre)
       cuMatrixCarlibrated = carlibrate(preMatrixCarlibrated %*% accMatrix,gacc,cuMatrixCarlibrated)
       

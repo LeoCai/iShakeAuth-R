@@ -72,8 +72,7 @@ getIndexesFromBob = function(excurtionIndexesAlice, tempBits, m = 3) {
 }
 
 bestLevelCrossing = function(converted_data_alice, converted_data_bob){
-  bestAlpha = 0
-  maxMetric = 0
+  bestAlpha = 0;  maxMetric = 0;  bestMismatch = 0
   bestRes = list()
   for (alpha in seq(0.01,1,0.02)) {
     rs = levelCrossing(converted_data_alice, converted_data_bob,alpha)
@@ -85,10 +84,11 @@ bestLevelCrossing = function(converted_data_alice, converted_data_bob){
       maxMetric = metric
       bestAlpha = alpha
       bestRes = rs
+      bestMismatch = mismatchNum
     }
     print(paste("alpha:",alpha,"  bitsLen",rs$bitLen,"  mis",mismatchNum,"  metric",metric))
   }
-  return(bestRes)
+  return(list(bits = bestRes, alpha = bestAlpha, mismatch = bestMismatch ,metric = maxMetric))
 }
 
 if (DEBUG) {

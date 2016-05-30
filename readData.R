@@ -1,7 +1,7 @@
 
 #get target coloumn of data
 getTargetData = function(data){
-  targetData = cbind(data[,c(4:12,19:21)])
+  targetData = cbind(data[,c(4:12,19,21,22)])
   return(targetData)
 }
 
@@ -31,8 +31,8 @@ testAlign = function(data1, data2,s1,e1,tag = "") {
   maxE2 = e1
   range = round(s1 / 2)
   for (i in 1:range) {
-    s2 = s1 - range / 2 + i
-    e2 = e1 - range / 2 + i
+    s2 = s1 - round(range / 2) + i
+    e2 = e1 - round(range / 2) + i
     c22 = c2[s2:e2]
     cvdata = cor(c11,c22)
     # print(paste(s2,e2,cvdata))
@@ -53,7 +53,7 @@ testAlign = function(data1, data2,s1,e1,tag = "") {
 
 #algin data using cross correlation
 cross_correlation = function(d1, d2){
-  s1 = 2; e1 = 50
+  s1 = 250; e1 = 750
   r = testAlign(d1,d2,s1,e1)
   return (list(alice=d1[s1:e1,], bob = d2[r[1]:r[2],]))
 }
