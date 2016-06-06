@@ -7,6 +7,7 @@ source("./extractRandomness.R")
 source("./reconcilation.R")
 source("./performance.R")
 library(entropy)
+library(zoo)
 
 codeTable = loadCodeTable()
 
@@ -14,7 +15,7 @@ expResult = list()
 
 expSet = c(1:7,9:12,14:15)
 
-expSet = c(2)
+# expSet = c(2)
 
 for (exp in expSet) {
   file_alice = paste("./datas/5_30/h1/aa",exp,"hh1.csv",sep = "")
@@ -32,7 +33,10 @@ for (exp in expSet) {
   trainParameter = train(trainDataFromBob, trainDataFromAlice)
   converted_data_alice = convertData(data_alice,trainParameter$initTheta1)
   converted_data_bob = convertData(data_bob,trainParameter$initTheta2)
-  rs = bestLevelCrossing(converted_data_alice, converted_data_bob)
+  smoothed_converted_data_alice = rollapply(converted_data_alice,5,mean)
+  smoothed_converted_data_bob = rollapply(converted_data_bob,5,mean)
+  
+  rs = bestLevelCrossing(smoothed_converted_data_alice, smoothed_converted_data_bob)
   bits_alice_bob = rs$bits
   bits_alice = bits_alice_bob$a
   bits_bob = bits_alice_bob$b
@@ -69,5 +73,5 @@ for(i in expSet){
 res = as.data.frame(resMt)
 names(res) = c("cor","bitrate","mismatchrate","metric","entopy","bitlen")
 
-write.table(res,"./results/expResut.csv",sep = ",")
+write.table(res,"./results/expResut-smooth.csv",sep = ",")
 # entropy(converted_data_alice[,1])
