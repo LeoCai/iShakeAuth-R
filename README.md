@@ -7,8 +7,7 @@
 
 ## 系统设计
 
-iShake Auth System in R language
-
+## 系统流程
 With iShake, Two people can naturally build trust via physical handshake.
 
 1. Read sensor data;
