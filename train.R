@@ -1,3 +1,6 @@
+#参数学习模块
+#学习初始姿态
+
 source("./transform.R")
 source("./utils.R")
 train = function(d1, d2) {

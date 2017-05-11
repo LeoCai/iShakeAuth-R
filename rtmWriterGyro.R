@@ -3,7 +3,7 @@
 
 indexGacc = 7:9
 indexGyr = 10:12
-indexDt = 22
+indexDt = 21 
 
 getMutipleRtms = function(fileName,MAG = T) {
   rtms_gyro_list = data.frame()
@@ -35,6 +35,20 @@ getRtmByGyr = function(rtm_gyr, gyr, dt) {
   rtm = getUpdateMatrix(rtm_gyr,gyr,dt)
   return (c(rtm[1,],rtm[2,],rtm[3,]))
 }
+
+result = getMutipleRtms("./datas/3_10_data/top/41.csv")
+write.table(
+  result,paste("./datas/rtms/top.csv",sep = ""),sep = ",", row.names =
+    F, col.names =
+    F
+)
+
+result = getMutipleRtms("./datas/3_10_data/leftpants/41.csv")
+write.table(
+  result,paste("./datas/rtms/leftpants.csv",sep = ""),sep = ",", row.names =
+    F, col.names =
+    F
+)
 
 writePair = function(expNum) {
   for (i in 1:2) {

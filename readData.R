@@ -1,4 +1,5 @@
-
+#读取数据
+#数据预处理相关函数
 #get target coloumn of data
 getTargetData = function(data){
   targetData = cbind(data[,c(4:12,19,21,22)])

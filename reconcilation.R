@@ -1,3 +1,5 @@
+#不一致比特协调
+
 reconcilation = function(bits_alice, bits_bob) {
   iterNum = 20
   blockNum = 5

@@ -1,3 +1,4 @@
+#测试PCA
 DEBUG = F
 
 source("./readData.R")

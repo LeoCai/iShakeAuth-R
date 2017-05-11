@@ -1,3 +1,5 @@
+#LevelCrossing 算法
+
 levelCrossing = function(d1, d2,alpha = 0.2) {
   alice = c()
   bob = c()
