@@ -7,6 +7,16 @@
 
 ## 系统设计
 
+### 系统模块设计图
+<img src="https://github.com/LeoCai/iShakeAuth-R/blob/master/imgs/system_design.png" width = "600" alt="系统设计" align=center />
+ 
+### 系统交互图
+<img src="https://github.com/LeoCai/iShakeAuth-R/blob/master/imgs/system_process.png" width = "600" alt="系统交互" align=center />
+
+### 系统数据转换算法图
+<img src="https://github.com/LeoCai/iShakeAuth-R/blob/master/imgs/system_alg.png" width = "600" alt="系统核心" align=center />
+
+
 ## 系统流程
 With iShake, Two people can naturally build trust via physical handshake.
 
