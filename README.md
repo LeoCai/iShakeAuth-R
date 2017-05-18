@@ -40,7 +40,7 @@ With iShake, Two people can naturally build trust via physical handshake.
 
 ## 重要参考文献
 1. Xiaojun Zhu 的论文《Extracting Secret key from Wireless Link Dynamics in Vehicular Environments》
-2. 《An introduction to inertial navigation》
+2. 《An introduction to inertial navigation》 21页
 3. LeoCai 的毕业论文《基于惯性传感器的人体运动感知机制研究》
 4. LeoCai 组内云盘的ppt
 
