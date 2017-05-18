@@ -38,4 +38,10 @@ With iShake, Two people can naturally build trust via physical handshake.
 
 9. Alice and Bob extract randomness using malkov modle.
 
+## 重要参考文献
+1. Xiaojun Zhu 的论文<<Extracting Secret key from Wireless Link Dynamics in Vehicular Environments>>
+2. 《An introduction to inertial navigation》
+3. LeoCai 的毕业论文《基于惯性传感器的人体运动感知机制研究》
+4. LeoCai 组内云盘的ppt
+
 <em>相关知识请参考组内云盘我的毕业论文<em>
