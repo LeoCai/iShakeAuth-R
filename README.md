@@ -38,6 +38,11 @@ With iShake, Two people can naturally build trust via physical handshake.
 
 9. Alice and Bob extract randomness using malkov modle.
 
+## 数据采集
+参考项目[Multi-Sensor_Collector](https://github.com/LeoCai/Multi-Sensor-DataCollector)
+以及其中的[weardata_collector](https://github.com/LeoCai/Multi-Sensor-DataCollector/tree/master/weardata_collector)
+因为之前项目被动过，手表数据采集的可能不能直接运行，但是代码应该是可用的，依赖[publiclibs项目](https://github.com/LeoCai/Multi-Sensor-DataCollector/tree/master/publiclibs)（该项目是独立与设备的传感器采集库，可用）
+
 ## 重要参考文献
 1. Xiaojun Zhu 的论文《Extracting Secret key from Wireless Link Dynamics in Vehicular Environments》
 2. 《An introduction to inertial navigation》 21页
